@@ -1,0 +1,28 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/cache
+       http://www.springframework.org/schema/cache/spring-cache.xsd
+       http://code.alibabatech.com/schema/dubbo
+       http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+
+    <!-- 服务提供方应用名称，方便依赖管理  -->
+    <dubbo:application name="echo-provider"/>
+
+    <!-- 注册中心，使用zk注册 -->
+    <dubbo:registry address="zookeeper://127.0.0.1:2181" group="nnynn" client="curator"/>
+
+    <!-- 声明使用的协议 -->
+    <dubbo:protocol name="dubbo" port="20880"/>
+
+    <!-- spring bean实例 -->
+    <bean id="echoService" class="com.nnynn.dubbo.provider.EchoServiceImpl"/>
+
+    <dubbo:provider filter="myproviderfilter" accesslog="true"/>
+
+    <dubbo:service interface="com.nnynn.dubbo.api.EchoService" ref="echoService"/>
+</beans>
